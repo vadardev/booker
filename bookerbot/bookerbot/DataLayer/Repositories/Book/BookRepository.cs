@@ -17,10 +17,7 @@ public class BookRepository
 insert into public.books(id, isbn, title, authors, photourl, siteurl, price, createdate)
 values(:Id, :Isbn, :Title, :Authors, :PhotoUrl, :SiteUrl, :Price, :CreateDate)
 on confict(isbn) do nothing;
-", new
-        {
-            entity,
-        });
+", EnumToStringMapper.Map(entity));
     }
 
     public Task<BookEntity?> Get(Guid id)

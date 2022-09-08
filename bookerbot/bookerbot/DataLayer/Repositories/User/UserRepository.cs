@@ -16,10 +16,7 @@ public class UserRepository
         return _dbMapper.ExecuteAsync(@"
 insert into public.users(id, telegramId)
 values(:Id, :TelegramId)
-on conflict(telegramId) do nothing;", new
-        {
-            entity,
-        });
+on conflict(telegramId) do nothing;", EnumToStringMapper.Map(entity));
     }
 
     public Task SetCityId(Guid userId, Guid cityId)

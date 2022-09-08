@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS public.users
 (
     id uuid NOT NULL,
-    telegramid numeric NOT NULL,
+    telegramid bigint NOT NULL,
     cityid uuid,
     CONSTRAINT users_pkey PRIMARY KEY (id),
     CONSTRAINT ux_users_telegramid UNIQUE (telegramid)

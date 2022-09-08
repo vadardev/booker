@@ -1,4 +1,5 @@
 ﻿using bookerbot.Bot;
+using bookerbot.DataLayer;
 using bookerbot.DataLayer.DbMapper;
 using bookerbot.DataLayer.Repositories.Book;
 using bookerbot.State;
@@ -17,7 +18,10 @@ var builder = new HostBuilder()
         services.AddSingleton<BotStarter>();
         services.AddSingleton<BotMessageHelper>();
         services.AddSingleton<StateFactory>();
-        services.AddSingleton<IDbMapper, NpgsqlDapperDbMapper>();
+        services.AddSingleton<IDbMapper>(x =>
+        {
+            return new NpgsqlDapperDbMapper(() => DbConfig.ConnectionString);
+        });
 
         services.AddTransient<AddBookState>();
         services.AddTransient<AddCityState>();

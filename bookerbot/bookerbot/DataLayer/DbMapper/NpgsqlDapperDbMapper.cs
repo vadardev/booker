@@ -12,7 +12,7 @@ namespace bookerbot.DataLayer.DbMapper
 
         protected override IDbConnection GetConnection(string connectionString)
         {
-            return new NpgsqlConnection(string.IsNullOrWhiteSpace(connectionString) ? DbConfig.ConnectionString : connectionString);
+            return new NpgsqlConnection(connectionString);
         }
     }
 }
