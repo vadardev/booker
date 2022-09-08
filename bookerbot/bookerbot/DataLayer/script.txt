@@ -1,0 +1,39 @@
+CREATE TABLE IF NOT EXISTS public.users
+(
+    id uuid NOT NULL,
+    telegramid numeric NOT NULL,
+    cityid uuid,
+    CONSTRAINT users_pkey PRIMARY KEY (id),
+    CONSTRAINT ux_users_telegramid UNIQUE (telegramid)
+);
+ 
+CREATE TABLE IF NOT EXISTS public.likebooks
+(
+    bookid uuid NOT NULL,
+    createdate timestamp without time zone NOT NULL,
+    islike boolean NOT NULL DEFAULT false,
+    userid uuid NOT NULL,
+    CONSTRAINT likebooks_pkey PRIMARY KEY (userid, bookid)
+);
+
+CREATE TABLE IF NOT EXISTS public.books
+(
+    id uuid NOT NULL,
+    isbn text NOT NULL,
+    authors text NOT NULL,
+    title text NOT NULL,
+    photourl text NOT NULL,
+    siteurl text,
+    price money NOT NULL,
+    createdate timestamp without time zone NOT NULL,
+    PRIMARY KEY (id),
+    UNIQUE (isbn)
+);
+
+CREATE TABLE IF NOT EXISTS public.cities
+(
+    id uuid NOT NULL,
+    name text NOT NULL,
+    PRIMARY KEY (id),
+    UNIQUE (name)
+);

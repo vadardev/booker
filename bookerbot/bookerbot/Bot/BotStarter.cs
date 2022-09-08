@@ -1,13 +1,16 @@
+using bookerbot.State;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
+using Telegram.Bot.Types.ReplyMarkups;
 
 namespace bookerbot.Bot;
 
 public class BotStarter
 {
+    private readonly BotMessageHelper _botMessageHelper;
     private readonly ReceiverOptions _receiverOptions = new()
     {
         AllowedUpdates = new[]
@@ -18,8 +21,9 @@ public class BotStarter
         ThrowPendingUpdates = true
     };
     
-    public BotStarter()
+    public BotStarter(BotMessageHelper botMessageHelper)
     {
+        _botMessageHelper = botMessageHelper;
     }
 
     public async Task Run()
@@ -41,6 +45,47 @@ public class BotStarter
     {
         if (update.Message is Message message)
         {
+            if (message.Text == "/start")
+            {
+                if (message.From != null)
+                {
+                    await _botMessageHelper.TryAddUser(message.From.Id);
+                }
+            }
+            else
+            {
+                await botClient.DeleteMessageAsync(message.Chat, message.MessageId, cancellationToken: cancellationToken);
+            }
+
+            if (message.From != null && message.Text != null)
+            {
+                ResponseMessage responseMessage = await _botMessageHelper.NextState(message.From.Id, message.Text); //await userContext.Change(message.Text ?? "");
+
+                ReplyKeyboardMarkup replyKeyboardMarkup = new(new[]
+                {
+                    responseMessage.UpButtons.Select(x => new KeyboardButton(x)),
+                    responseMessage.DownButtons.Select(x => new KeyboardButton(x)),
+                    responseMessage.Buttons.Select(x => new KeyboardButton(x))
+                })
+                {
+
+                    ResizeKeyboard = true,
+                    OneTimeKeyboard = false,
+
+                };
+
+                if (responseMessage.ResponseMessageType == EResponseMessageType.Photo)
+                {
+                    await botClient.SendPhotoAsync(message.Chat,
+                        photo: responseMessage.PhotoUrl ?? "",
+                        caption: responseMessage.Text,
+                        replyMarkup: replyKeyboardMarkup);
+                }
+                else
+                {
+                    await botClient.SendTextMessageAsync(message.Chat, responseMessage.Text, replyMarkup: replyKeyboardMarkup);
+                }
+            }
         }
     }
 

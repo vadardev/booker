@@ -7,6 +7,10 @@ public class UserContext
     private readonly StateFactory _stateFactory;
 
     public EContextState State { get; set; }
+    
+    public Guid UserId { get; set; }
+
+    public Guid? ShowBookId { get; set; }
 
     public UserContext(StateFactory stateFactory)
     {
