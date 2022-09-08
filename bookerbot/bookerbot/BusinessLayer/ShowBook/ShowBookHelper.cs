@@ -21,18 +21,36 @@ public class ShowBookHelper
             showBooks = books.Select(x => new ShowBookModel
             {
                 BookId = x.Id,
+                Isbn = x.Isbn,
                 Title = $"{x.Title}. {x.Authors}. {x.Isbn}",
                 PhotoUrl = x.PhotoUrl,
             }).ToList();
         }
 
+
+
         ShowBookModel? showBook = showBooks.FirstOrDefault();
+
+
 
         if (showBook != null)
         {
-            _showBooks.TryAdd(userId, showBooks.Where(x => x.BookId != showBook.BookId).ToList());
+            var books = showBooks.Where(x => x.BookId != showBook.BookId).ToList();
+
+            if (books.Any())
+            {
+                _showBooks.TryAdd(userId, books.ToList());
+            }
+            else
+            {
+                _showBooks.Remove(userId);
+            }
 
             return showBook;
+        }
+        else
+        {
+            _showBooks.Remove(userId);
         }
 
         return null;

@@ -55,11 +55,13 @@ where id in (
 				where userid in (
 						select id
 						from users 
-						where cityId = (
-						select cityId
-						from users 
-						where id = :userId
-						) and id <> :userId
+						where ((select cityId
+								from users 
+								where id = :userId) is null or cityId = (
+											select cityId
+											from users 
+											where id = :userId
+						)) and id <> :userId
 					)
 				)
 and id not in (

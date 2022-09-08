@@ -12,12 +12,15 @@ public class ProfileState : IUserState
     public static string Back = "◀️ Назад";
 
     private readonly ExchangeState _exchangeState;
+    private readonly MyBooksState _myBooksState;
     private readonly UserRepository _userRepository;
 
     public ProfileState(ExchangeState exchangeState,
+        MyBooksState myBooksState,
         UserRepository userRepository)
     {
         _exchangeState = exchangeState;
+        _myBooksState = myBooksState;
         _userRepository = userRepository;
     }
 
@@ -37,14 +40,19 @@ public class ProfileState : IUserState
 
         if (message == MyBooks)
         {
-            return await ProfileState.GetResponseMessage(userContext);
+            return await _myBooksState.GetResponseMessage(userContext);
         }
         else if (message == City)
         {
-            return await ProfileState.GetResponseMessage(userContext);
+            return await AddCityState.GetResponseMessage(userContext);
         }
 
-        return await _exchangeState.GetResponseMessage(userContext);
+        if (message == Back)
+        {
+            return await _exchangeState.GetResponseMessage(userContext);
+        }
+
+        return await GetResponseMessage(userContext);
     }
 
     public static async Task<ResponseMessage> GetResponseMessage(UserContext context, string? message = null)

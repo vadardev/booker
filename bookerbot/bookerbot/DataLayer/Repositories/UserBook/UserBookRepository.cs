@@ -32,4 +32,32 @@ where u.userid = :userId;
             userId,
         });
     }
+
+    public Task Delete(Guid userId, Guid bookId)
+    {
+        return _dbMapper.ExecuteAsync(@"
+delete from public.userbooks
+where userId = :userId and bookId = :bookId;
+", new
+        {
+            userId,
+            bookId,
+        });
+    }
+
+    public Task DeleteByBookName(Guid userId, string bookName)
+    {
+        return _dbMapper.ExecuteAsync(@"
+delete from public.userbooks
+where userId = :userId and bookId in (
+  select id
+  from public.books
+  where title = :bookName
+);
+", new
+        {
+            userId,
+            bookName,
+        });
+    }
 }

@@ -3,25 +3,29 @@ using bookerbot.Context;
 using bookerbot.DataLayer.Repositories.Book;
 using bookerbot.DataLayer.Repositories.UserBook;
 using Newtonsoft.Json;
+using bookerbot.Images;
 
 namespace bookerbot.State;
 
 public class AddBookState : IUserState
 {
     public static string Back = "◀️ Назад";
-    
+
     private readonly IHttpClientFactory _httpClientFactory;
 
     private readonly BookRepository _bookRepository;
     private readonly UserBookRepository _userBookRepository;
+    private readonly SuccessAddBookState _successAddBookState;
 
     public AddBookState(IHttpClientFactory httpClientFactory,
         BookRepository bookRepository,
-        UserBookRepository userBookRepository)
+        UserBookRepository userBookRepository,
+        SuccessAddBookState successAddBookState)
     {
         _httpClientFactory = httpClientFactory;
         _bookRepository = bookRepository;
         _userBookRepository = userBookRepository;
+        _successAddBookState = successAddBookState;
     }
 
     public async Task<ResponseMessage> Handle(UserContext userContext, string message)
@@ -62,7 +66,7 @@ public class AddBookState : IUserState
                 CreateDate = DateTime.UtcNow,
             });
 
-            return await ProfileState.GetResponseMessage(userContext, "Книга успешно добавлена!");
+            return await _successAddBookState.GetResponseMessage(userContext, book.Id);
         }
 
         return await ProfileState.GetResponseMessage(userContext);
@@ -94,11 +98,13 @@ public class AddBookState : IUserState
 
             var image = await httpClient.GetByteArrayAsync(book.Meta.Image);
 
-            await using (FileStream fs = new FileStream($"bookerbot/Images/{isbn}.jpg", FileMode.Create))
+
+            await using (FileStream fs = new FileStream($"{Utility.GetDirectoryPath}{isbn}.jpg", FileMode.Create))
             {
-               await fs.WriteAsync(image, 0, image.Length);
+                await fs.WriteAsync(image);
             }
-         
+
+            return book;
         }
 
         return null;

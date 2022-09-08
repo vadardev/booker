@@ -7,4 +7,7 @@ public enum EContextState
     Exchange,
     Profile,
     NotFoundExchange,
+    SuccessAddBook,
+    MyBooks,
+    DeleteBook,
 }

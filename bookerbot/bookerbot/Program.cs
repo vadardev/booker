@@ -33,6 +33,9 @@ var builder = new HostBuilder()
         services.AddTransient<ExchangeState>();
         services.AddTransient<ProfileState>();
         services.AddTransient<NotFoundExchangeState>();
+        services.AddTransient<SuccessAddBookState>();
+        services.AddTransient<MyBooksState>();
+        
         
         services.AddSingleton<BookRepository>();
         services.AddSingleton<UserBookRepository>();

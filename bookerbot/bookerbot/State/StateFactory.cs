@@ -26,6 +26,10 @@ public class StateFactory
                 return _serviceProvider.GetRequiredService<ProfileState>();
             case EContextState.NotFoundExchange:
                 return _serviceProvider.GetRequiredService<NotFoundExchangeState>();
+            case EContextState.SuccessAddBook:
+                return _serviceProvider.GetRequiredService<SuccessAddBookState>();
+            case EContextState.MyBooks:
+                return _serviceProvider.GetRequiredService<MyBooksState>();
         }
 
         return _serviceProvider.GetRequiredService<ExchangeState>();

@@ -2,6 +2,7 @@ using bookerbot.BusinessLayer.ShowBook;
 using bookerbot.Context;
 using bookerbot.DataLayer.Repositories.LikeBook;
 using bookerbot.DataLayer.Repositories.User;
+using bookerbot.Images;
 using telegrambotconsole.DataLayer.Repositories.User;
 
 namespace bookerbot.State;
@@ -92,7 +93,7 @@ public class ExchangeState : IUserState
                 Text = showBookModel.Title,
                 UpButtons = new List<string> { Like, Dislike },
                 DownButtons = new List<string> { AddBook, Profile },
-                PhotoUrl = showBookModel.PhotoUrl,
+                PhotoUrl = $"{Utility.GetDirectoryPath}{showBookModel.Isbn}.jpg",
                 ResponseMessageType = EResponseMessageType.Photo
             };
         }
