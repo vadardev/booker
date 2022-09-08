@@ -1,4 +1,5 @@
 using bookerbot.Context;
+using bookerbot.DataLayer.Repositories.User;
 using bookerbot.State;
 using telegrambotconsole.DataLayer.Repositories.User;
 
@@ -42,6 +43,8 @@ public class BotMessageHelper
             userContext = new UserContext(_stateFactory);
             userContext.State = EContextState.Exchange;
             userContext.UserId = user.Id;
+
+            userContexts.TryAdd(user.Id, userContext);
         }
 
         return userContext;

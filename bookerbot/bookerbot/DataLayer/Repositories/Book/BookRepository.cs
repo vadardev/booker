@@ -16,7 +16,7 @@ public class BookRepository
         return _dbMapper.ExecuteAsync(@"
 insert into public.books(id, isbn, title, authors, photourl, siteurl, price, createdate)
 values(:Id, :Isbn, :Title, :Authors, :PhotoUrl, :SiteUrl, :Price, :CreateDate)
-on confict(isbn) do nothing;
+on conflict(isbn) do nothing;
 ", EnumToStringMapper.Map(entity));
     }
 
@@ -41,6 +41,35 @@ where isbn = :isbn;
 ", new
         {
             isbn,
+        });
+    }
+
+    public Task<IEnumerable<BookView>> GetBooksForExchange(Guid userId)
+    {
+        return _dbMapper.QueryAsync<BookView>(@"
+select *
+from books
+where id in (
+				select distinct bookId
+				from userBooks
+				where userid in (
+						select id
+						from users 
+						where cityId = (
+						select cityId
+						from users 
+						where id = :userId
+						) and id <> :userId
+					)
+				)
+and id not in (
+				select bookid 
+				from likeBooks
+				where userid = :userId and islike = true
+			  )
+", new
+        {
+            userId,
         });
     }
 }

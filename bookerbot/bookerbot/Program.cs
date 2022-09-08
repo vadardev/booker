@@ -1,14 +1,17 @@
 ﻿using bookerbot.Bot;
+using bookerbot.BusinessLayer;
+using bookerbot.BusinessLayer.ShowBook;
 using bookerbot.DataLayer;
 using bookerbot.DataLayer.DbMapper;
 using bookerbot.DataLayer.Repositories.Book;
+using bookerbot.DataLayer.Repositories.City;
+using bookerbot.DataLayer.Repositories.LikeBook;
+using bookerbot.DataLayer.Repositories.User;
+using bookerbot.DataLayer.Repositories.UserBook;
 using bookerbot.State;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using telegrambotconsole.DataLayer.Repositories.City;
-using telegrambotconsole.DataLayer.Repositories.LikeBook;
 using telegrambotconsole.DataLayer.Repositories.User;
-using telegrambotconsole.DataLayer.Repositories.UserBook;
 
 var builder = new HostBuilder()
     .ConfigureServices((hostContext, services) =>
@@ -23,10 +26,13 @@ var builder = new HostBuilder()
             return new NpgsqlDapperDbMapper(() => DbConfig.ConnectionString);
         });
 
+        services.AddSingleton<ShowBookHelper>();
+        
         services.AddTransient<AddBookState>();
         services.AddTransient<AddCityState>();
         services.AddTransient<ExchangeState>();
         services.AddTransient<ProfileState>();
+        services.AddTransient<NotFoundExchangeState>();
         
         services.AddSingleton<BookRepository>();
         services.AddSingleton<UserBookRepository>();

@@ -1,4 +1,4 @@
-namespace telegrambotconsole.DataLayer.Repositories.City;
+namespace bookerbot.DataLayer.Repositories.City;
 
 public class CityEntity
 {

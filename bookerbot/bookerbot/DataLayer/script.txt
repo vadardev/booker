@@ -37,3 +37,11 @@ CREATE TABLE IF NOT EXISTS public.cities
     PRIMARY KEY (id),
     UNIQUE (name)
 );
+
+CREATE TABLE IF NOT EXISTS public.userbooks
+(
+    userid uuid NOT NULL,
+    bookid uuid NOT NULL,
+    createdate timestamp without time zone,
+    PRIMARY KEY (userid, bookid)
+);

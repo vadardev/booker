@@ -6,4 +6,5 @@ public enum EContextState
     AddCity,
     Exchange,
     Profile,
+    NotFoundExchange,
 }

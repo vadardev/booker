@@ -1,6 +1,6 @@
 using bookerbot.Context;
-using telegrambotconsole.DataLayer.Repositories.City;
-using telegrambotconsole.DataLayer.Repositories.User;
+using bookerbot.DataLayer.Repositories.City;
+using bookerbot.DataLayer.Repositories.User;
 
 namespace bookerbot.State;
 
@@ -39,12 +39,17 @@ public class AddCityState : IUserState
             await _userRepository.SetCityId(userContext.UserId, city.Id);
         }
 
-        userContext.State = EContextState.Profile;
+        return await ProfileState.GetResponseMessage(userContext);
+    }
+
+    public static async Task<ResponseMessage> GetResponseMessage(UserContext context)
+    {
+        context.State = EContextState.AddCity;
 
         return new ResponseMessage
         {
-            Text = "Профиль",
-            UpButtons = new List<string> { ProfileState.MyBooks, ProfileState.City, ProfileState.Back },
+            Text = "Напишите ваш город:",
+            UpButtons = new List<string> { AddCityState.Back },
             ResponseMessageType = EResponseMessageType.Text
         };
     }

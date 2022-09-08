@@ -24,6 +24,8 @@ public class StateFactory
                 return _serviceProvider.GetRequiredService<ExchangeState>();
             case EContextState.Profile:
                 return _serviceProvider.GetRequiredService<ProfileState>();
+            case EContextState.NotFoundExchange:
+                return _serviceProvider.GetRequiredService<NotFoundExchangeState>();
         }
 
         return _serviceProvider.GetRequiredService<ExchangeState>();

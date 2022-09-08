@@ -1,6 +1,6 @@
 using bookerbot.DataLayer.DbMapper;
 
-namespace telegrambotconsole.DataLayer.Repositories.City;
+namespace bookerbot.DataLayer.Repositories.City;
 
 public class CityRepository
 {
@@ -17,10 +17,7 @@ public class CityRepository
 insert into public.cities(id, name)
 values (:Id, :Name)
 on conflict(name) do nothing;
-", new
-        {
-            entity
-        });
+", EnumToStringMapper.Map(entity));
     }
 
     public Task<CityEntity?> GetByName(string name)

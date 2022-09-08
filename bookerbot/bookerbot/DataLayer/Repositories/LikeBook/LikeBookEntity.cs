@@ -1,4 +1,4 @@
-namespace telegrambotconsole.DataLayer.Repositories.LikeBook;
+namespace bookerbot.DataLayer.Repositories.LikeBook;
 
 public class LikeBookEntity
 {

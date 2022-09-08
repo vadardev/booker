@@ -1,6 +1,7 @@
 using bookerbot.DataLayer.DbMapper;
+using telegrambotconsole.DataLayer.Repositories.User;
 
-namespace telegrambotconsole.DataLayer.Repositories.User;
+namespace bookerbot.DataLayer.Repositories.User;
 
 public class UserRepository
 {

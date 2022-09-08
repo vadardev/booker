@@ -1,14 +1,15 @@
 using System.Net.Http.Headers;
 using bookerbot.Context;
 using bookerbot.DataLayer.Repositories.Book;
+using bookerbot.DataLayer.Repositories.UserBook;
 using Newtonsoft.Json;
-using telegrambotconsole.DataLayer.Repositories.User;
-using telegrambotconsole.DataLayer.Repositories.UserBook;
 
 namespace bookerbot.State;
 
 public class AddBookState : IUserState
 {
+    public static string Back = "◀️ Назад";
+    
     private readonly IHttpClientFactory _httpClientFactory;
 
     private readonly BookRepository _bookRepository;
@@ -25,39 +26,60 @@ public class AddBookState : IUserState
 
     public async Task<ResponseMessage> Handle(UserContext userContext, string message)
     {
-        userContext.State = EContextState.Profile;
-
-        string isbn = message.Trim();
-
-        BookEntity? book = await _bookRepository.GetByIsbn(isbn);
-
-        if (book == null)
+        if (message != Back)
         {
-            NewBook? newBook = await GetBook(isbn);
+            string isbn = message.Trim();
 
-            if (newBook == null)
+            BookEntity? book = await _bookRepository.GetByIsbn(isbn);
+
+            if (book == null)
             {
-                return new ResponseMessage
+                NewBook? newBook = await GetBook(isbn);
+
+                if (newBook == null)
                 {
-                    Text = "Не удалось найти книгу",
-                    UpButtons = new List<string> { ProfileState.MyBooks, ProfileState.City, ProfileState.Back },
-                    ResponseMessageType = EResponseMessageType.Text
+                    return await ProfileState.GetResponseMessage(userContext, "Не удалось найти книгу");
+                }
+
+                book = new BookEntity
+                {
+                    Id = Guid.NewGuid(),
+                    Isbn = isbn,
+                    Title = newBook.Title,
+                    Authors = newBook.Meta.Author.FirstOrDefault()?.Name ?? "",
+                    PhotoUrl = newBook.Meta.Image,
+                    SiteUrl = newBook.Link,
+                    Price = newBook.Meta.Price,
+                    CreateDate = DateTime.UtcNow,
                 };
+                await _bookRepository.Add(book);
             }
 
-            book = new BookEntity();
-            await _bookRepository.Add(book);
+            await _userBookRepository.Add(new UserBookEntity
+            {
+                UserId = userContext.UserId,
+                BookId = book.Id,
+                CreateDate = DateTime.UtcNow,
+            });
+
+            return await ProfileState.GetResponseMessage(userContext, "Книга успешно добавлена!");
         }
 
-        await _userBookRepository.Add(new UserBookEntity());
+        return await ProfileState.GetResponseMessage(userContext);
+    }
+
+    public static async Task<ResponseMessage> GetResponseMessage(UserContext context)
+    {
+        context.State = EContextState.AddBook;
 
         return new ResponseMessage
         {
-            Text = "Книга успешно добавлена!",
-            UpButtons = new List<string> { ProfileState.MyBooks, ProfileState.City, ProfileState.Back },
+            Text = "Укажите ISBN книги:",
+            UpButtons = new List<string> { AddBookState.Back },
             ResponseMessageType = EResponseMessageType.Text
         };
     }
+
 
     private async Task<NewBook?> GetBook(string isbn)
     {
@@ -68,7 +90,15 @@ public class AddBookState : IUserState
 
         if (response?.Books != null && response.Books.Any())
         {
-            return response.Books.First();
+            NewBook book = response.Books.First();
+
+            var image = await httpClient.GetByteArrayAsync(book.Meta.Image);
+
+            await using (FileStream fs = new FileStream($"bookerbot/Images/{isbn}.jpg", FileMode.Create))
+            {
+               await fs.WriteAsync(image, 0, image.Length);
+            }
+         
         }
 
         return null;

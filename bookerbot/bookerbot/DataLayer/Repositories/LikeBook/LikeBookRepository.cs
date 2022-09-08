@@ -1,6 +1,6 @@
 using bookerbot.DataLayer.DbMapper;
 
-namespace telegrambotconsole.DataLayer.Repositories.LikeBook;
+namespace bookerbot.DataLayer.Repositories.LikeBook;
 
 public class LikeBookRepository
 {
@@ -19,6 +19,6 @@ values (:BookId, :UserId, :IsLike, :CreateDate)
 on conflict(bookId, userId) do update
 set isLike = EXCLUDED.isLike,
     createdate = EXCLUDED.createDate;
-", entity);
+", EnumToStringMapper.Map(entity));
     }
 }

@@ -4,6 +4,7 @@ using Telegram.Bot.Exceptions;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
+using Telegram.Bot.Types.InputFiles;
 using Telegram.Bot.Types.ReplyMarkups;
 
 namespace bookerbot.Bot;
@@ -76,10 +77,15 @@ public class BotStarter
 
                 if (responseMessage.ResponseMessageType == EResponseMessageType.Photo)
                 {
-                    await botClient.SendPhotoAsync(message.Chat,
-                        photo: responseMessage.PhotoUrl ?? "",
-                        caption: responseMessage.Text,
-                        replyMarkup: replyKeyboardMarkup);
+                    using (var fileStream = new FileStream("/Users/vadimarduanov/RiderProjects/booker/bookerbot/bookerbot/Common/a65eb6a075f4360811e178f53d9dfcab.jpg",
+                               FileMode.Open, FileAccess.Read, FileShare.Read))
+                    {
+                        await botClient.SendPhotoAsync(message.Chat,
+                            photo: new InputOnlineFile(
+                                fileStream), // new InputMedia("https://ndc.book24.ru/resize/220x270/iblock/f57/f570377d06e49196c0cffa31bd8e62df/a65eb6a075f4360811e178f53d9dfcab.jpg"),// ,
+                            caption: responseMessage.Text,
+                            replyMarkup: replyKeyboardMarkup, cancellationToken: cancellationToken);
+                    }
                 }
                 else
                 {

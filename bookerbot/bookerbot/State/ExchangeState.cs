@@ -1,5 +1,7 @@
+using bookerbot.BusinessLayer.ShowBook;
 using bookerbot.Context;
-using telegrambotconsole.DataLayer.Repositories.LikeBook;
+using bookerbot.DataLayer.Repositories.LikeBook;
+using bookerbot.DataLayer.Repositories.User;
 using telegrambotconsole.DataLayer.Repositories.User;
 
 namespace bookerbot.State;
@@ -13,20 +15,21 @@ public class ExchangeState : IUserState
     
     private readonly LikeBookRepository _likeBookRepository;
     private readonly UserRepository _userRepository;
+    private readonly ShowBookHelper _showBookHelper;
 
     public ExchangeState(LikeBookRepository likeBookRepository,
-        UserRepository userRepository)
+        UserRepository userRepository,
+        ShowBookHelper showBookHelper)
     {
         _likeBookRepository = likeBookRepository;
         _userRepository = userRepository;
+        _showBookHelper = showBookHelper;
     }
 
     public async Task<ResponseMessage> Handle(UserContext userContext, string message)
     {
         if (message == Like)
         {
-            userContext.State = EContextState.Exchange;
-
             if (userContext.ShowBookId.HasValue)
             {
                 await _likeBookRepository.Add(new LikeBookEntity
@@ -38,21 +41,10 @@ public class ExchangeState : IUserState
                 });
             }
 
-            userContext.ShowBookId = Guid.NewGuid();
-
-            return new ResponseMessage
-            {
-                Text = "Название книги 1",
-                UpButtons = new List<string> { Like, Dislike },
-                DownButtons = new List<string> {AddBook, Profile },
-                PhotoUrl = "https://cdn.book24.ru/v2/ASE000000000862783/COVER/cover3d1__w220.jpg",
-                ResponseMessageType = EResponseMessageType.Photo
-            };
+            return await GetResponseMessage(userContext);
         }
         else if (message == Dislike)
         {
-            userContext.State = EContextState.Exchange;
-            
             if (userContext.ShowBookId.HasValue)
             {
                 await _likeBookRepository.Add(new LikeBookEntity
@@ -64,27 +56,11 @@ public class ExchangeState : IUserState
                 });
             }
 
-            userContext.ShowBookId = Guid.NewGuid();
-
-            return new ResponseMessage
-            {
-                Text = "Название книги 2",
-                UpButtons = new List<string> { Like, Dislike },
-                DownButtons = new List<string> {AddBook, Profile },
-                PhotoUrl = "https://ndc.book24.ru/resize/220x270/iblock/56e/56ecd4daffa4473798b46746eb77231d/e32f9baf94eac3e8377142fd6e83469f.jpg",
-                ResponseMessageType = EResponseMessageType.Photo
-            };
+            return await GetResponseMessage(userContext);
         }
         else if (message == Profile)
         {
-            userContext.State = EContextState.Profile;
-
-            return new ResponseMessage
-            {
-                Text = "Профиль",
-                UpButtons = new List<string> { ProfileState.MyBooks, ProfileState.City, ProfileState.Back },
-                ResponseMessageType = EResponseMessageType.Text
-            };
+            return await ProfileState.GetResponseMessage(userContext);
         }
         else if (message == AddBook)
         {
@@ -92,36 +68,35 @@ public class ExchangeState : IUserState
 
             if (user?.CityId == null)
             {
-                userContext.State = EContextState.AddCity;
-
-                return new ResponseMessage
-                {
-                    Text = "Напишите ваш город:",
-                    UpButtons = new List<string> { AddCityState.Back },
-                    ResponseMessageType = EResponseMessageType.Text
-                };
+                return await AddCityState.GetResponseMessage(userContext);
             }
 
-            userContext.State = EContextState.AddBook;
+            return await AddBookState.GetResponseMessage(userContext);
+        }
+
+
+        return await GetResponseMessage(userContext);
+    }
+
+    public async Task<ResponseMessage> GetResponseMessage(UserContext context)
+    {
+        ShowBookModel? showBookModel = await _showBookHelper.GetShowBook(context.UserId);
+
+        if (showBookModel != null)
+        {
+            context.State = EContextState.Exchange;
+            context.ShowBookId = showBookModel.BookId;
 
             return new ResponseMessage
             {
-                Text = "Профиль",
-                UpButtons = new List<string> { ProfileState.MyBooks, ProfileState.City, ProfileState.Back },
-                ResponseMessageType = EResponseMessageType.Text
+                Text = showBookModel.Title,
+                UpButtons = new List<string> { Like, Dislike },
+                DownButtons = new List<string> { AddBook, Profile },
+                PhotoUrl = showBookModel.PhotoUrl,
+                ResponseMessageType = EResponseMessageType.Photo
             };
         }
 
-        userContext.State = EContextState.Exchange;
-        userContext.ShowBookId = Guid.NewGuid();
-        
-        return new ResponseMessage
-        {
-            Text = "Название книги",
-            UpButtons = new List<string> { Like, Dislike },
-            DownButtons = new List<string> {AddBook, Profile },
-            PhotoUrl = "https://ndc.book24.ru/resize/220x270/iblock/56e/56ecd4daffa4473798b46746eb77231d/e32f9baf94eac3e8377142fd6e83469f.jpg",
-            ResponseMessageType = EResponseMessageType.Photo
-        };
+        return await NotFoundExchangeState.GetResponseMessage(context);
     }
 }

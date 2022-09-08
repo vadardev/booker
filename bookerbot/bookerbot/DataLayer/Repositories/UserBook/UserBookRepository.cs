@@ -1,6 +1,6 @@
 using bookerbot.DataLayer.DbMapper;
 
-namespace telegrambotconsole.DataLayer.Repositories.UserBook;
+namespace bookerbot.DataLayer.Repositories.UserBook;
 
 public class UserBookRepository
 {
@@ -13,6 +13,23 @@ public class UserBookRepository
 
     public Task Add(UserBookEntity entity)
     {
-        return Task.CompletedTask;
+        return _dbMapper.ExecuteAsync(@"
+insert into public.userbooks(userId, bookId, createDate)
+values (:UserId, :BookId, :CreateDate)
+on conflict(userId, bookId) do nothing;
+", EnumToStringMapper.Map(entity));
+    }
+
+    public Task<IEnumerable<UserBookView>> GetByUserId(Guid userId)
+    {
+        return _dbMapper.QueryAsync<UserBookView>(@"
+select b.*
+from public.userBooks u
+join public.books b on b.id = u.bookId
+where u.userid = :userId;
+", new
+        {
+            userId,
+        });
     }
 }
