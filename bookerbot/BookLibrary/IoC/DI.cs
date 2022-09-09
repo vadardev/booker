@@ -4,6 +4,7 @@ using BookLibrary.DataLayer;
 using BookLibrary.DataLayer.DbMapper;
 using BookLibrary.DataLayer.Repositories.Book;
 using BookLibrary.DataLayer.Repositories.City;
+using BookLibrary.DataLayer.Repositories.Exchange;
 using BookLibrary.DataLayer.Repositories.LikeBook;
 using BookLibrary.DataLayer.Repositories.User;
 using BookLibrary.DataLayer.Repositories.UserBook;
@@ -39,5 +40,6 @@ public static class DI
         services.AddSingleton<CityRepository>();
         services.AddSingleton<UserRepository>();
         services.AddSingleton<LikeBookRepository>();
+        services.AddSingleton<ExchangeRepository>();
     }
 }

@@ -26,24 +26,17 @@ public class ShowBookHelper
                 PhotoUrl = x.PhotoUrl,
             }).ToList();
         }
-
-
-
         ShowBookModel? showBook = showBooks.FirstOrDefault();
-
-
 
         if (showBook != null)
         {
             var books = showBooks.Where(x => x.BookId != showBook.BookId).ToList();
 
+            _showBooks.Remove(userId);
+            
             if (books.Any())
             {
                 _showBooks.TryAdd(userId, books.ToList());
-            }
-            else
-            {
-                _showBooks.Remove(userId);
             }
 
             return showBook;

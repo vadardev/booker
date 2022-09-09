@@ -43,7 +43,7 @@ where telegramId = :telegramId;
             telegramId,
         });
     }
-    
+
     public Task<UserEntity?> Get(Guid id)
     {
         return _dbMapper.QueryFirstOrDefaultAsync<UserEntity?>(@"
@@ -54,5 +54,14 @@ where id = :id;
         {
             id,
         });
+    }
+
+    public Task<IEnumerable<UserEntity>> GetAll()
+    {
+        return _dbMapper.QueryAsync<UserEntity>(@"
+select *
+from public.users
+where id = :id;
+");
     }
 }

@@ -47,3 +47,10 @@ CREATE TABLE IF NOT EXISTS public.userbooks
     createdate timestamp without time zone,
     PRIMARY KEY (userid, bookid)
 );
+
+
+delete from public.books;
+delete from public.cities;
+delete from public.likebooks;
+delete from public.userbooks;
+delete from public.users;
