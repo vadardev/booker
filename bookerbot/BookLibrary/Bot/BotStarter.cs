@@ -50,6 +50,67 @@ public class BotStarter
         }
     }
 
+    public async Task SendMessage(ITelegramBotClient botClient, long chatId, ResponseMessage responseMessage, CancellationToken cancellationToken)
+    {
+        List<List<KeyboardButton>> buttons = new List<List<KeyboardButton>>();
+
+        if (responseMessage.UpButtons.Any())
+        {
+            buttons.Add(responseMessage.UpButtons.Select(x => new KeyboardButton(x)).ToList());
+        }
+
+        if (responseMessage.DownButtons.Any())
+        {
+            buttons.Add(responseMessage.DownButtons.Select(x => new KeyboardButton(x)).ToList());
+        }
+
+        if (responseMessage.Buttons.Any())
+        {
+            List<KeyboardButton> rowButtons = new List<KeyboardButton>();
+
+            int count = responseMessage.Buttons.Count;
+
+            for (int i = 0; i < count; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    rowButtons.Add(new KeyboardButton(responseMessage.Buttons[i]));
+                }
+                else
+                {
+                    rowButtons.Add(new KeyboardButton(responseMessage.Buttons[i]));
+                    buttons.Add(rowButtons);
+                    rowButtons = new List<KeyboardButton>();
+                }
+
+                if (i == count - 1 && rowButtons.Any())
+                {
+                    buttons.Add(rowButtons);
+                    rowButtons = new List<KeyboardButton>();
+                }
+            }
+        }
+
+        ReplyKeyboardMarkup replyKeyboardMarkup = new(buttons)
+        {
+            ResizeKeyboard = true,
+            OneTimeKeyboard = false,
+        };
+
+        if (responseMessage.ResponseMessageType == EResponseMessageType.Photo)
+        {
+            await using var fileStream = new FileStream(responseMessage.PhotoUrl!, FileMode.Open, FileAccess.Read, FileShare.Read);
+            await botClient.SendPhotoAsync(chatId,
+                photo: new InputOnlineFile(fileStream),
+                caption: responseMessage.Text,
+                replyMarkup: replyKeyboardMarkup, cancellationToken: cancellationToken);
+        }
+        else
+        {
+            await botClient.SendTextMessageAsync(chatId, responseMessage.Text, replyMarkup: replyKeyboardMarkup, cancellationToken: cancellationToken);
+        }
+    }
+
     private async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
     {
         try
@@ -90,65 +151,7 @@ public class BotStarter
                         ChatId = message.Chat.Id
                     }, message.Text);
 
-                    List<List<KeyboardButton>> buttons = new List<List<KeyboardButton>>();
-
-                    if (responseMessage.UpButtons.Any())
-                    {
-                        buttons.Add(responseMessage.UpButtons.Select(x => new KeyboardButton(x)).ToList());
-                    }
-                    
-                    if (responseMessage.DownButtons.Any())
-                    {
-                        buttons.Add(responseMessage.DownButtons.Select(x => new KeyboardButton(x)).ToList());
-                    }
-                    
-                    if (responseMessage.Buttons.Any())
-                    {
-                        List<KeyboardButton> rowButtons = new List<KeyboardButton>();
-
-                        int count = responseMessage.Buttons.Count;
-
-                        for (int i = 0; i < count; i++)
-                        {
-                            if (i % 2 == 0)
-                            {
-                                rowButtons.Add(new KeyboardButton(responseMessage.Buttons[i]));
-                            }
-                            else
-                            {
-                                rowButtons.Add(new KeyboardButton(responseMessage.Buttons[i]));
-                                buttons.Add(rowButtons);
-                                rowButtons = new List<KeyboardButton>();
-                            }
-
-                            if (i == count - 1 && rowButtons.Any())
-                            {
-                                buttons.Add(rowButtons);
-                                rowButtons = new List<KeyboardButton>();
-                            }
-                        }
-                    }
-                    
-                    ReplyKeyboardMarkup replyKeyboardMarkup = new(buttons)
-                    {
-                        ResizeKeyboard = true,
-                        OneTimeKeyboard = false,
-                    };
-
-                    if (responseMessage.ResponseMessageType == EResponseMessageType.Photo)
-                    {
-                        using (var fileStream = new FileStream(responseMessage.PhotoUrl, FileMode.Open, FileAccess.Read, FileShare.Read))
-                        {
-                            await botClient.SendPhotoAsync(message.Chat,
-                                photo: new InputOnlineFile(fileStream),
-                                caption: responseMessage.Text,
-                                replyMarkup: replyKeyboardMarkup, cancellationToken: cancellationToken);
-                        }
-                    }
-                    else
-                    {
-                        await botClient.SendTextMessageAsync(message.Chat, responseMessage.Text, replyMarkup: replyKeyboardMarkup);
-                    }
+                    await SendMessage(botClient, message.Chat.Id, responseMessage, cancellationToken);
                 }
             }
         }
