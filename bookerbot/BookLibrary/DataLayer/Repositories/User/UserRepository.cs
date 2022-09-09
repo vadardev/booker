@@ -15,8 +15,8 @@ public class UserRepository
     public Task TryAdd(UserEntity entity)
     {
         return _dbMapper.ExecuteAsync(@"
-insert into public.users(id, telegramId, userName)
-values(:Id, :TelegramId, :UserName)
+insert into public.users(id, telegramId, userName, chatId)
+values(:Id, :TelegramId, :UserName, :ChatId)
 on conflict(telegramId) do nothing;", EnumToStringMapper.Map(entity));
     }
 

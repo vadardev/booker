@@ -54,13 +54,18 @@ public class BotStarter
     {
         try
         {
-            if (update.Message is Message message)
+            if (update.Message is { } message)
             {
                 if (message.Text == "/start")
                 {
                     if (message.From != null)
                     {
-                        await _botMessageHelper.TryAddUser(message.From.Id, message.From.Username);
+                        await _botMessageHelper.TryAddUser(new TelegramUser
+                        {
+                            Id = message.From.Id,
+                            UserName = message.From.Username,
+                            ChatId = message.Chat.Id
+                        });
                     }
                 }
                 else
@@ -78,7 +83,12 @@ public class BotStarter
 
                 if (message.From != null && message.Text != null)
                 {
-                    ResponseMessage responseMessage = await _botMessageHelper.NextState(message.From.Id, message.From.Username, message.Text); //await userContext.Change(message.Text ?? "");
+                    ResponseMessage responseMessage = await _botMessageHelper.NextState(new TelegramUser
+                    {
+                        Id = message.From.Id,
+                        UserName = message.From.Username,
+                        ChatId = message.Chat.Id
+                    }, message.Text);
 
                     List<List<KeyboardButton>> buttons = new List<List<KeyboardButton>>();
 

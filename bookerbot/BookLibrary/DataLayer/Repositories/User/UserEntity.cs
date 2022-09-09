@@ -7,4 +7,6 @@ public class UserEntity
     
     public string? UserName { get; set; }
     public Guid? CityId { get; set; }
+    
+    public long ChatId { get; set; }
 }

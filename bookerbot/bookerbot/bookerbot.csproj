@@ -18,7 +18,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="DataLayer\DbMapper" />
+      <ProjectReference Include="..\BookLibrary\BookLibrary.csproj" />
     </ItemGroup>
 
 </Project>
