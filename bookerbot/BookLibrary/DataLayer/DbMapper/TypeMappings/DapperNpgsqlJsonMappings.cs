@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Reflection;
-using bookerbot.DataLayer.DbMapper.Attributes;
-using bookerbot.DataLayer.DbMapper.TypeHandlers;
+using BookLibrary.DataLayer.DbMapper.Attributes;
+using BookLibrary.DataLayer.DbMapper.TypeHandlers;
 using Dapper;
 
-namespace bookerbot.DataLayer.DbMapper.TypeMappings
+namespace BookLibrary.DataLayer.DbMapper.TypeMappings
 {
     public static class DapperNpgsqlJsonMappings
     {

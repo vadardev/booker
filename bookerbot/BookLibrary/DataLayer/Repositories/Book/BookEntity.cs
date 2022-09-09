@@ -1,4 +1,4 @@
-namespace bookerbot.DataLayer.Repositories.Book;
+namespace BookLibrary.DataLayer.Repositories.Book;
 
 public class BookEntity
 {

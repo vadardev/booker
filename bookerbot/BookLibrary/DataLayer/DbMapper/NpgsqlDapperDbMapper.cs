@@ -2,7 +2,7 @@ using System.Data;
 using Npgsql;
 using Vesta.DbMapper;
 
-namespace bookerbot.DataLayer.DbMapper
+namespace BookLibrary.DataLayer.DbMapper
 {
     public class NpgsqlDapperDbMapper : DapperDbMapper
     {

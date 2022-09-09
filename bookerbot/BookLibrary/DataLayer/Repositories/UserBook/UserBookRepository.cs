@@ -1,6 +1,6 @@
-using bookerbot.DataLayer.DbMapper;
+using BookLibrary.DataLayer.DbMapper;
 
-namespace bookerbot.DataLayer.Repositories.UserBook;
+namespace BookLibrary.DataLayer.Repositories.UserBook;
 
 public class UserBookRepository
 {

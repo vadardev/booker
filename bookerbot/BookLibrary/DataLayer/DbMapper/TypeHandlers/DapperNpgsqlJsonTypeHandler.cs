@@ -5,7 +5,7 @@ using Newtonsoft.Json.Converters;
 using Npgsql;
 using NpgsqlTypes;
 
-namespace bookerbot.DataLayer.DbMapper.TypeHandlers
+namespace BookLibrary.DataLayer.DbMapper.TypeHandlers
 {
     internal class DapperNpgsqlJsonTypeHandler : SqlMapper.ITypeHandler
     {

@@ -1,9 +1,9 @@
-using bookerbot.Context;
-using bookerbot.DataLayer.Repositories.User;
-using bookerbot.State;
+using BookLibrary.Context;
+using BookLibrary.DataLayer.Repositories.User;
+using BookLibrary.State;
 using telegrambotconsole.DataLayer.Repositories.User;
 
-namespace bookerbot.Bot;
+namespace BookLibrary.Bot;
 
 public class BotMessageHelper
 {

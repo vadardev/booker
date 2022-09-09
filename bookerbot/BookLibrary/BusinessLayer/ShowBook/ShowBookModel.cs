@@ -1,4 +1,4 @@
-namespace bookerbot.BusinessLayer.ShowBook;
+namespace BookLibrary.BusinessLayer.ShowBook;
 
 public class ShowBookModel
 {

@@ -1,4 +1,4 @@
-namespace bookerbot.DataLayer.DbMapper.Attributes
+namespace BookLibrary.DataLayer.DbMapper.Attributes
 {
     /// <summary>
     /// Маппить в json в базе

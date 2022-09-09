@@ -1,11 +1,11 @@
-using bookerbot.BusinessLayer.ShowBook;
-using bookerbot.Context;
-using bookerbot.DataLayer.Repositories.LikeBook;
-using bookerbot.DataLayer.Repositories.User;
-using bookerbot.Images;
+using BookLibrary.BusinessLayer.ShowBook;
+using BookLibrary.Context;
+using BookLibrary.DataLayer.Repositories.LikeBook;
+using BookLibrary.DataLayer.Repositories.User;
+using BookLibrary.Images;
 using telegrambotconsole.DataLayer.Repositories.User;
 
-namespace bookerbot.State;
+namespace BookLibrary.State;
 
 public class ExchangeState : IUserState
 {

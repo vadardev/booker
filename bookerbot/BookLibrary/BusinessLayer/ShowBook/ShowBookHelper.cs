@@ -1,6 +1,6 @@
-using bookerbot.DataLayer.Repositories.Book;
+using BookLibrary.DataLayer.Repositories.Book;
 
-namespace bookerbot.BusinessLayer.ShowBook;
+namespace BookLibrary.BusinessLayer.ShowBook;
 
 public class ShowBookHelper
 {

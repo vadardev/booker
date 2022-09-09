@@ -1,6 +1,6 @@
-using bookerbot.State;
+using BookLibrary.State;
 
-namespace bookerbot.Context;
+namespace BookLibrary.Context;
 
 public class UserContext
 {

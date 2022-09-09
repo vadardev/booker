@@ -1,4 +1,4 @@
-namespace bookerbot.Context;
+namespace BookLibrary.Context;
 
 public enum EContextState
 {

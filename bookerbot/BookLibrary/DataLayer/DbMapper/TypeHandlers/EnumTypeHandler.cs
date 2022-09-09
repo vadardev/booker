@@ -3,7 +3,7 @@ using Dapper;
 using Npgsql;
 using NpgsqlTypes;
 
-namespace bookerbot.DataLayer.DbMapper.TypeHandlers
+namespace BookLibrary.DataLayer.DbMapper.TypeHandlers
 {
     internal class EnumTypeHandler : SqlMapper.ITypeHandler
     {

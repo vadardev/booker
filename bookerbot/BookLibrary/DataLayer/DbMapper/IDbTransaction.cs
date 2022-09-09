@@ -1,4 +1,4 @@
-namespace bookerbot.DataLayer.DbMapper
+namespace BookLibrary.DataLayer.DbMapper
 {
     public interface IDbTransactionScope : IDisposable
     {

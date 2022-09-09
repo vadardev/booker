@@ -1,6 +1,6 @@
-using bookerbot.Context;
+using BookLibrary.Context;
 
-namespace bookerbot.State;
+namespace BookLibrary.State;
 
 public interface IUserState
 {

@@ -1,4 +1,4 @@
-using bookerbot.State;
+using BookLibrary.State;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Polling;
@@ -7,7 +7,7 @@ using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.InputFiles;
 using Telegram.Bot.Types.ReplyMarkups;
 
-namespace bookerbot.Bot;
+namespace BookLibrary.Bot;
 
 public class BotStarter
 {

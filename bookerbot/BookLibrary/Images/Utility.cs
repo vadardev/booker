@@ -1,4 +1,4 @@
-namespace bookerbot.Images;
+namespace BookLibrary.Images;
 
 public static class Utility
 {

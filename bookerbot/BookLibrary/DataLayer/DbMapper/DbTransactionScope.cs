@@ -1,7 +1,7 @@
 using System.Transactions;
 using Npgsql;
 
-namespace bookerbot.DataLayer.DbMapper
+namespace BookLibrary.DataLayer.DbMapper
 {
     public class DbTransactionScope : IDbTransactionScope
     {

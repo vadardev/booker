@@ -1,4 +1,4 @@
-namespace bookerbot.State;
+namespace BookLibrary.State;
 
 public class ResponseMessage
 {

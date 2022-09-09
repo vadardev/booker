@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Concurrent;
 
-namespace bookerbot.DataLayer.DbMapper
+namespace BookLibrary.DataLayer.DbMapper
 {
     public static class EnumToStringMapper
     {

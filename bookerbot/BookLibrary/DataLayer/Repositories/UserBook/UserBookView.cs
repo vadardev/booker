@@ -1,4 +1,4 @@
-namespace bookerbot.DataLayer.Repositories.UserBook;
+namespace BookLibrary.DataLayer.Repositories.UserBook;
 
 public class UserBookView
 {

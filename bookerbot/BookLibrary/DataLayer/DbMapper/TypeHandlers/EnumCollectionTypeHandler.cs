@@ -2,7 +2,7 @@ using System.Collections;
 using System.Data;
 using Dapper;
 
-namespace bookerbot.DataLayer.DbMapper.TypeHandlers
+namespace BookLibrary.DataLayer.DbMapper.TypeHandlers
 {
     internal class EnumCollectionTypeHandler : SqlMapper.ITypeHandler
     {

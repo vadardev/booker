@@ -1,11 +1,11 @@
 using System.Net.Http.Headers;
-using bookerbot.Context;
-using bookerbot.DataLayer.Repositories.Book;
-using bookerbot.DataLayer.Repositories.UserBook;
+using BookLibrary.Context;
+using BookLibrary.DataLayer.Repositories.Book;
+using BookLibrary.DataLayer.Repositories.UserBook;
 using Newtonsoft.Json;
-using bookerbot.Images;
+using BookLibrary.Images;
 
-namespace bookerbot.State;
+namespace BookLibrary.State;
 
 public class AddBookState : IUserState
 {

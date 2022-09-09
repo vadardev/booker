@@ -1,8 +1,8 @@
-using bookerbot.Context;
-using bookerbot.DataLayer.Repositories.Book;
-using bookerbot.Images;
+using BookLibrary.Context;
+using BookLibrary.DataLayer.Repositories.Book;
+using BookLibrary.Images;
 
-namespace bookerbot.State;
+namespace BookLibrary.State;
 
 public class SuccessAddBookState : IUserState
 {

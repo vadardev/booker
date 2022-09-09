@@ -1,4 +1,4 @@
-namespace bookerbot.DataLayer.DbMapper.Attributes
+namespace BookLibrary.DataLayer.DbMapper.Attributes
 {
     /// <summary>
     /// Маппить коллекцию Enum в массив строк в базе даных и обратно

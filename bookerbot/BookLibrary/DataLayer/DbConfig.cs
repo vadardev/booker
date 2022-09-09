@@ -1,4 +1,4 @@
-namespace bookerbot.DataLayer;
+namespace BookLibrary.DataLayer;
 
 public static class DbConfig
 {

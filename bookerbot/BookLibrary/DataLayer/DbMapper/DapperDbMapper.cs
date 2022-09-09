@@ -4,7 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
-using bookerbot.DataLayer.DbMapper;
+using BookLibrary.DataLayer.DbMapper;
 using Dapper;
 using Npgsql;
 using IsolationLevel = System.Transactions.IsolationLevel;

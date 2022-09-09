@@ -1,8 +1,8 @@
-using bookerbot.Context;
-using bookerbot.DataLayer.Repositories.City;
-using bookerbot.DataLayer.Repositories.User;
+using BookLibrary.Context;
+using BookLibrary.DataLayer.Repositories.City;
+using BookLibrary.DataLayer.Repositories.User;
 
-namespace bookerbot.State;
+namespace BookLibrary.State;
 
 public class AddCityState : IUserState
 {

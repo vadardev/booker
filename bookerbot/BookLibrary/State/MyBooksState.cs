@@ -1,7 +1,7 @@
-using bookerbot.Context;
-using bookerbot.DataLayer.Repositories.UserBook;
+using BookLibrary.Context;
+using BookLibrary.DataLayer.Repositories.UserBook;
 
-namespace bookerbot.State;
+namespace BookLibrary.State;
 
 public class MyBooksState : IUserState
 {

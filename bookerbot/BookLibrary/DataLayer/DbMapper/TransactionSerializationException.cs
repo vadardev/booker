@@ -1,6 +1,6 @@
 using System.Runtime.Serialization;
 
-namespace bookerbot.DataLayer.DbMapper
+namespace BookLibrary.DataLayer.DbMapper
 {
     [Serializable]
     public class TransactionSerializationException : Exception
