@@ -34,7 +34,10 @@ public class ExchangeHelper
             {
                var exchanges = await _exchangeRepository.GetExchange(user.Id);
 
-               userExchanges = new ExchangeModel();
+               userExchanges = new ExchangeModel
+               {
+                  LikeUserBookModels = new List<LikeUserBookModel>()
+               };
                foreach (var exchangeView in exchanges)
                {
                   userExchanges.LikeUserBookModels.Add(new LikeUserBookModel
@@ -51,9 +54,9 @@ public class ExchangeHelper
             if (likeUserBook != null)
             {
                var exchanges = userExchanges.LikeUserBookModels
-                  .Where(x => x.UserName == likeUserBook.UserName
+                  .Where(x => !(x.UserName == likeUserBook.UserName
                               && x.LikeBookTitle == likeUserBook.LikeBookTitle
-                              && x.UserBookTitle == likeUserBook.UserBookTitle).ToList();
+                              && x.UserBookTitle == likeUserBook.UserBookTitle)).ToList();
 
                _exchanges.Remove(user.Id);
 

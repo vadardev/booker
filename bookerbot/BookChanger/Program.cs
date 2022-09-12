@@ -28,7 +28,7 @@ using var serviceScope = host.Services.CreateScope();
         {
             await exchangeHelper.Start(bot);
 
-            await Task.Delay(TimeSpan.FromMinutes(1));
+            await Task.Delay(TimeSpan.FromMinutes(60));
         }
     }
     catch (Exception ex)

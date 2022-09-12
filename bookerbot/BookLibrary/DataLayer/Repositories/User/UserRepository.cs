@@ -60,8 +60,7 @@ where id = :id;
     {
         return _dbMapper.QueryAsync<UserEntity>(@"
 select *
-from public.users
-where id = :id;
+from public.users;
 ");
     }
 }

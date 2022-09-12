@@ -32,7 +32,7 @@ public class ExchangeRepository
 			order by lb.createdate asc) as tb
 		join users u on u.id = tb.likeUserId
 		join books lb on lb.id = tb.likeBookId
-		join books ub on ub.id = tb.userBooksId
+		join books ub on ub.id = tb.userBookId
 ", new
         {
             userId,
