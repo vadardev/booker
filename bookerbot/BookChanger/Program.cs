@@ -1,5 +1,4 @@
-﻿using BookLibrary.Bot;
-using BookLibrary.BusinessLayer.Exchange;
+﻿using BookLibrary.BusinessLayer.Exchange;
 using BookLibrary.IoC;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

@@ -34,6 +34,22 @@ public class BotMessageHelper
         return await userContext.Change(message);
     }
 
+    public async Task<ResponseMessage> ForceConnectUserState(Guid userId, string message)
+    {
+        if (userContexts.TryGetValue(userId, out var userContext))
+        {
+            userContexts.Remove(userId);
+        }
+        
+        userContext = new UserContext(_stateFactory);
+        userContext.State = EContextState.UserConnect;
+        userContext.UserId = userId;
+
+        userContexts.TryAdd(userId, userContext);
+
+        return UserConnectState.GetResponseMessage(userContext, message);
+    }
+
     private async Task<UserContext> GetUserContext(TelegramUser telegramUser)
     {
         UserEntity user = await GetUser(telegramUser);
@@ -70,5 +86,5 @@ public class BotMessageHelper
 
         return user;
     }
-
+    
 }

@@ -1,4 +1,5 @@
 using BookLibrary.Bot;
+using BookLibrary.BusinessLayer.Exchange;
 using BookLibrary.BusinessLayer.ShowBook;
 using BookLibrary.DataLayer;
 using BookLibrary.DataLayer.DbMapper;
@@ -25,6 +26,7 @@ public static class DI
         services.AddSingleton<IDbMapper>(x => { return new NpgsqlDapperDbMapper(() => DbConfig.ConnectionString); });
 
         services.AddSingleton<ShowBookHelper>();
+        services.AddSingleton<ExchangeHelper>();
 
         services.AddTransient<AddBookState>();
         services.AddTransient<AddCityState>();
@@ -33,6 +35,8 @@ public static class DI
         services.AddTransient<NotFoundExchangeState>();
         services.AddTransient<SuccessAddBookState>();
         services.AddTransient<MyBooksState>();
+        services.AddTransient<UserConnectState>();
+        
 
 
         services.AddSingleton<BookRepository>();

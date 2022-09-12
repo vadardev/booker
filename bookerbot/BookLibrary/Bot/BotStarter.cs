@@ -111,6 +111,13 @@ public class BotStarter
         }
     }
 
+    public async Task SendMessage(ITelegramBotClient botClient, long chatId, Guid userId, string message, CancellationToken cancellationToken)
+    {
+        ResponseMessage responseMessage = await _botMessageHelper.ForceConnectUserState(userId, message);
+
+        await SendMessage(botClient, chatId, responseMessage, cancellationToken);
+    }
+
     private async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
     {
         try

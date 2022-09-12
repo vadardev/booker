@@ -30,6 +30,8 @@ public class StateFactory
                 return _serviceProvider.GetRequiredService<SuccessAddBookState>();
             case EContextState.MyBooks:
                 return _serviceProvider.GetRequiredService<MyBooksState>();
+            case EContextState.UserConnect:
+                return _serviceProvider.GetRequiredService<UserConnectState>();
         }
 
         return _serviceProvider.GetRequiredService<ExchangeState>();

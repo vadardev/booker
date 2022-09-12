@@ -10,4 +10,5 @@ public enum EContextState
     SuccessAddBook,
     MyBooks,
     DeleteBook,
+    UserConnect,
 }
